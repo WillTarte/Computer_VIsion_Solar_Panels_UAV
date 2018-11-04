@@ -21,6 +21,7 @@ Algorithm:
 import cv2
 import numpy as np
 import matplotlib as mpl
+from matplotlib import pyplot as plt
 
 #load image in grayscale
 img = cv2.imread("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test.png", 0);
@@ -46,39 +47,29 @@ co_x = 0
 co_y = 0
 
 start_loc = [0,0]
-threshold = 5
 
+counter = 0
 while True:
-    for x in range(0, x_offset):
-        for y in range(0, y_offset):
-            if abs(int(img[start_loc[0]][start_loc[1]]-img[start_loc[0]+x][start_loc[1]+y])) <= threshold:
-                co_matrix[co_x][co_y] +=1
-                continue
 
-    start_loc[0] += x_offset
     if start_loc[0] > img_matrix.shape[0]-x_offset:
         start_loc[0] = 0
         start_loc[1] += y_offset
         if start_loc[1] > img_matrix.shape[1]-y_offset:
             break
 
-    co_x += 1
-    if co_x >= dimension_co:
-        co_x = 0
-        co_y +=1
-        if co_y >= dimension_co:
-            break
+    for x in range(0, x_offset):
+        for y in range(0, y_offset):
+            p_value = [img_matrix.item((start_loc[0],start_loc[1])), img_matrix.item((start_loc[0]+x_offset, start_loc[1] +y_offset))]
+            co_matrix.itemset((p_value[0] - p_min - 1, p_value[1]-p_min - 1), co_matrix.item((p_value[0] - p_min - 1, p_value[1]-p_min - 1))+1)
+    start_loc[0] += x_offset
 
 
-print(co_matrix[0])
+a = co_matrix.copy() # Replace this line with your 90x100 numpy array.
+a = np.expand_dims(a, axis = 2)
+a = np.concatenate((a, a, a), axis = 2)
+print(a.shape)
+plt.imshow(a)
+plt.show()
 
-
-
-
-
-
-
-cv2.imshow('image',img)
-cv2.imshow('GLCM', co_matrix)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+#cv2.imshow("GLCM", co_matrix)
+cv2.waitKey()
