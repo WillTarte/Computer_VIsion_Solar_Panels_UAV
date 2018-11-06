@@ -21,7 +21,7 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 
 #load image in grayscale
-img = cv2.imread("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test3.png", 0);
+img = cv2.imread("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test.png", 0);
 
 #make img a numpy array
 img_matrix = np.matrix(img)
@@ -36,40 +36,54 @@ dimension_co = p_max - p_min
 co_matrix = np.zeros((dimension_co,dimension_co),dtype=np.int32)
 
 
-x_offset = 2
-y_offset = 2
-img_x = 0
-img_y = 0
-co_x = 0
-co_y = 0
+print(img_matrix.shape)
 
+x_offset = 1
+y_offset = 1
+
+#row, column
 start_loc = [0,0]
+# shape (129, 145)
+
+#how to access numpy array values :^)
+#print(img_matrix[0,0])
+
 
 while True:
 
-    if start_loc[1] >= img_matrix.shape[0]- y_offset:
+    print(start_loc)
+
+    if start_loc[1] >= img_matrix.shape[1]:
         start_loc[1] = 0
         start_loc[0] += x_offset
-        if start_loc[0] >= img_matrix.shape[0]- x_offset:
+        if start_loc[0] >= img_matrix.shape[0]:
             break
 
-    for x in range(0, x_offset):
-        for y in range(0, y_offset):
-            p_value = [img_matrix.item((start_loc[0],start_loc[1])), img_matrix.item((start_loc[0]+x_offset, start_loc[1] +y_offset))]
-            co_matrix.itemset((p_value[0] - p_min - 1, p_value[1]-p_min - 1), co_matrix.item((p_value[0] - p_min - 1, p_value[1]-p_min - 1))+1)
+#create a list of values with first value being x and every other value y (x,y)
+    for x in range(-x_offset, x_offset +1):
+        for y in range(-y_offset, y_offset+1):
+            #
+            if (start_loc[0] + x <= 0) or (start_loc[0] + x >= co_matrix.shape[0]):
+                continue
+            elif (start_loc[1] + y <= 0) or (start_loc[1] + y >= co_matrix.shape[1]):
+                continue
 
+            p_pair = [img_matrix[start_loc[0], start_loc[1]], img_matrix[start_loc[0]+x, start_loc[1]+y]]
+            co_matrix[p_pair[0]-p_min, p_pair[1]-p_min] += 1
+            #
     start_loc[1] += y_offset
+
+#Code below to display results
 
 cv2.imshow('image',img)
 
-a = co_matrix.copy() # Replace this line with your 90x100 numpy array.
+a = co_matrix.copy()
 a = a.astype(np.uint8)
 a = np.expand_dims(a, axis = 2)
 a = np.concatenate((a, a, a), axis = 2)
 print(a.shape)
 plt.imshow(a)
 plt.show()
-
 
 cv2.waitKey(0)
 plt.close('all')
