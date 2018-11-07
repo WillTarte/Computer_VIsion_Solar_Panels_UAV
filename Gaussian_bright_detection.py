@@ -2,6 +2,8 @@
 Code by Adrian Rosebrock
 https://www.pyimagesearch.com/2014/09/29/finding-brightest-spot-image-using-python-opencv/
 '''
+#Have to find a way to detect if the images HAS a IR bright spot
+
 
 # import the necessary packages
 import numpy as np
@@ -26,6 +28,6 @@ gray = cv2.GaussianBlur(gray, (args["radius"], args["radius"]), 0)
 image = orig.copy()
 cv2.circle(image, maxLoc, args["radius"], (255, 0, 0), 2)
 
-# display the results of our newly improved method
+# display the results
 cv2.imshow("Robust", image)
 cv2.waitKey(0)
