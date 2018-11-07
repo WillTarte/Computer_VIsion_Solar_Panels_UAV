@@ -36,13 +36,14 @@ dimension_co = p_max - p_min
 co_matrix = np.zeros((dimension_co,dimension_co),dtype=np.int32)
 
 
-print(img_matrix.shape)
-
 x_offset = 1
 y_offset = 1
 
 #row, column
 start_loc = [0,0]
+
+print(img_matrix.shape)
+print(img_matrix.shape[0], img_matrix.shape[1])
 # shape (129, 145)
 
 #how to access numpy array values :^)
@@ -61,16 +62,15 @@ while True:
 
 #create a list of values with first value being x and every other value y (x,y)
     for x in range(-x_offset, x_offset +1):
+        if (start_loc[0] + x < 0) or (start_loc[0] + x >= co_matrix.shape[0]):
+            continue
         for y in range(-y_offset, y_offset+1):
-            #
-            if (start_loc[0] + x <= 0) or (start_loc[0] + x >= co_matrix.shape[0]):
+            if (start_loc[1] + y <= 0) or (start_loc[1] + y >= co_matrix.shape[1]):
                 continue
-            elif (start_loc[1] + y <= 0) or (start_loc[1] + y >= co_matrix.shape[1]):
-                continue
-
+            print("vector(",x,", ",y,")")
             p_pair = [img_matrix[start_loc[0], start_loc[1]], img_matrix[start_loc[0]+x, start_loc[1]+y]]
             co_matrix[p_pair[0]-p_min, p_pair[1]-p_min] += 1
-            #
+
     start_loc[1] += y_offset
 
 #Code below to display results
