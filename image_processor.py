@@ -25,7 +25,7 @@ from matplotlib import pyplot as plt
 #load image in grayscale
 #Desktop path C:\Users\William\Documents\GitHub\Computer_VIsion_Solar_Panels_UAV\test.png
 #Laptop path C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test.png
-img = cv2.imread("C:\\Users\\William\\Documents\\GitHub\\Computer_VIsion_Solar_Panels_UAV\\test2.png", 0);
+img = cv2.imread("C:\\Users\\William\\Documents\\GitHub\\Computer_VIsion_Solar_Panels_UAV\\test.png", 0);
 
 
 #make img a numpy array
@@ -83,15 +83,16 @@ while True:
     #start from the next pixel
     start_loc[1] += 1
 
+
 #Code below to display results
 
 cv2.imshow('image',img)
 
 a = co_matrix.copy()
-a = a.astype(np.uint8)
+a = a.astype(np.uint32)
 a = np.expand_dims(a, axis = 2)
 a = np.concatenate((a, a, a), axis = 2)
-print(a.shape)
+
 plt.imshow(a)
 plt.show()
 
