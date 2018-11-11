@@ -1,5 +1,5 @@
 #Author: William Tarte
-#Purpose: given an input of an image, recognize solar panels
+#Purpose: given an input of an image, recognize if the solar panel has a lit IR beacon
 
 '''
 Algorithm:
@@ -23,7 +23,10 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 
 #load image in grayscale
-img = cv2.imread("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test.png", 0);
+#Desktop path C:\Users\William\Documents\GitHub\Computer_VIsion_Solar_Panels_UAV\test.png
+#Laptop path C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test.png
+img = cv2.imread("C:\\Users\\William\\Documents\\GitHub\\Computer_VIsion_Solar_Panels_UAV\\test2.png", 0);
+
 
 #make img a numpy array
 img_matrix = np.matrix(img)
@@ -46,7 +49,8 @@ start_loc = [0,0]
 
 #test code
 print(img_matrix.shape)
-print(img_matrix.shape[0], img_matrix.shape[1])
+print(p_max, p_min)
+print(co_matrix.shape)
 # shape (129, 145)
 
 #how to access numpy array/matrix values :^)
@@ -56,32 +60,28 @@ print(img_matrix.shape[0], img_matrix.shape[1])
 #Main loop for GLCM computation
 while True:
 
-    print(start_loc)
-
     #this tests if we are at the end of rows/columns
     if start_loc[1] >= img_matrix.shape[1]:
         start_loc[1] = 0
-        start_loc[0] += x_offset
+        start_loc[0] += 1
         if start_loc[0] >= img_matrix.shape[0]:
             break
 
     #With given offsets, create all possible vectors (in this case checks up to 9 neighbours
     #for each pixel
-    for x in range(-x_offset, x_offset +1):
-        #check to see if neigbour pixel is inside matrix
-        if (start_loc[0] + x < 0) or (start_loc[0] + x >= co_matrix.shape[0]):
+    for x in range(-(x_offset), x_offset +1):
+        #check to see if neighbour pixel is inside matrix
+        if (start_loc[0] + x < 0) or (start_loc[0] + x >= img_matrix.shape[0]):
             continue
-        for y in range(-y_offset, y_offset+1):
-            if (start_loc[1] + y <= 0) or (start_loc[1] + y >= co_matrix.shape[1]):
+        for y in range(-(y_offset), y_offset+1):
+            if (start_loc[1] + y <= 0) or (start_loc[1] + y >= img_matrix.shape[1]):
                 continue
-            print("vector(",x,", ",y,")")
-
             #if it is, then find the pixel values and increment their combination in the GLCM
             p_pair = [img_matrix[start_loc[0], start_loc[1]], img_matrix[start_loc[0]+x, start_loc[1]+y]]
-            co_matrix[p_pair[0]-p_min, p_pair[1]-p_min] += 1
+            co_matrix[p_pair[0]-p_min-1, p_pair[1]-p_min-1] += 1
 
     #start from the next pixel
-    start_loc[1] += y_offset
+    start_loc[1] += 1
 
 #Code below to display results
 

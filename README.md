@@ -2,7 +2,7 @@
 
 ## TO-DO
 * The algorithm only checks adjacent pixel values to the right/down
-I have to change it so that it can check in every direction 
+I have to change it so that it can check in every direction
 * And divide the matrix by the total number of comparisons??
 * Gaussian bright detection works
 * _Have to find a way to check if the image has an IR bright spot. If it does,_
@@ -16,7 +16,7 @@ _you apply the Gaussian bright detection._
 ## Sources
 * https://www.scnsoft.com/blog/machine-vision-to-detect-solar-panel-defects
 * https://en.wikipedia.org/wiki/DBSCAN#Algorithm
-* __https://www.pyimagesearch.com/2014/09/29/finding-brightest-spot-image-using-python-opencv/__
+* https://www.pyimagesearch.com/2014/09/29/finding-brightest-spot-image-using-python-opencv/
 * https://support.echoview.com/WebHelp/Windows_and_Dialog_Boxes/Dialog_Boxes/Variable_properties_dialog_box/Operator_pages/GLCM_Texture_Features.htm
 * https://www.pyimagesearch.com/2017/08/21/deep-learning-with-opencv/
 * https://towardsdatascience.com/object-detection-with-10-lines-of-code-d6cb4d86f606
