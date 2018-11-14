@@ -17,8 +17,9 @@ class Detection(object):
         self.image_path = img_path
         self.image_matrix = self.calculate_matrix()
         self.histogram, self.bin_edges = self.calculate_histogram()
-        self.peaks, self.valleys, self.gradient = self.histogram_differentiation()
-        self.best_threshold, self.thresholds = self.threshold_calculation()
+        #self.peaks, self.valleys, self.gradient = self.histogram_differentiation()
+        #self.best_threshold, self.thresholds = self.threshold_calculation()
+        self.valleys, self.peaks, self.lastmin, self.lastmax = self.find_t()
 
     def calculate_histogram(self):
         hist, bin_e = np.histogram(self.image_matrix, bins=range(self.image_matrix.min(),self.image_matrix.max()+1, 1))
@@ -29,8 +30,33 @@ class Detection(object):
         img = cv2.GaussianBlur(img,(9,9),0)
         return np.matrix(img)
 
+    def find_t(self):
+
+        peaks = list()
+        valleys = list()
+        for index in self.bin_edges[0:-2]:
+            if self.histogram[index-1] > self.histogram[index] < self.histogram[index +1]:
+                valleys.append(index)
+            elif self.histogram[index-1] < self.histogram[index] > self.histogram[index +1]:
+                peaks.append(index)
+            else:
+                continue
+
+        lastmax = peaks[-1]
+
+        min = len(valleys) - 1
+        while valleys[min] > lastmax:
+            min -=1
+
+        lastmin = valleys[min]
+
+        return peaks, valleys, lastmin, lastmax
+
+
+'''
     def histogram_differentiation(self):
         differentiation = list()
+
         for i in range(len(self.histogram)-1):
             differentiation.append(self.histogram[i+1] - self.histogram[i])
         differentiation.append(0)
@@ -70,7 +96,7 @@ class Detection(object):
             candidates.append(d)
 
         return min(candidates[1:len(candidates)-1]), candidates
-
+'''
 
 
 
@@ -78,13 +104,17 @@ class Detection(object):
 
 
 test = Detection("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\images.jpg")
-print(test.histogram, "\n", test.bin_edges)
+#print(test.histogram, "\n", test.bin_edges)
 
 
-print(test.peaks, "\n", test.valleys, "\n", test.gradient)
-print(test.best_threshold,"\n", test.thresholds)
 
-ret, thresh1 = cv2.threshold(cv2.imread(test.image_path), test.best_threshold, 255, cv2.THRESH_BINARY)
+
+#print(test.peaks, "\n", test.valleys, "\n", test.gradient)
+#print(test.best_threshold,"\n", test.thresholds)
+
+print(test.lastmin)
+
+ret, thresh1 = cv2.threshold(cv2.imread(test.image_path), test.lastmin , 255, cv2.THRESH_BINARY)
 plt.imshow(thresh1)
 
 plt.show()
