@@ -2,8 +2,8 @@
 #Purpose: given an input of an image, recognize if the solar panel has a lit IR beacon
 
 
-##TODO: I'm able to extract the pixel values for the valleys but unable to choose the best one for thresholding
-## Its possible the algorithm
+##TODO: Need to convert color images to grayscale. How do I check what color space the image is using?
+##lastmin is not working
 
 #import necessary packages
 import cv2
@@ -17,9 +17,7 @@ class Detection(object):
         self.image_path = img_path
         self.image_matrix = self.calculate_matrix()
         self.histogram, self.bin_edges = self.calculate_histogram()
-        #self.peaks, self.valleys, self.gradient = self.histogram_differentiation()
-        #self.best_threshold, self.thresholds = self.threshold_calculation()
-        self.valleys, self.peaks, self.lastmin, self.lastmax = self.find_t()
+        self.peaks, self.valleys, self.lastmin, self.lastmax = self.find_t()
 
     def calculate_histogram(self):
         hist, bin_e = np.histogram(self.image_matrix, bins=range(self.image_matrix.min(),self.image_matrix.max()+1, 1))
@@ -27,28 +25,29 @@ class Detection(object):
 
     def calculate_matrix(self):
         img = cv2.imread(self.image_path, 0)
-        img = cv2.GaussianBlur(img,(9,9),0)
-        return np.matrix(img)
+        #img = cv2.GaussianBlur(img,(5,5),)
+        return img
 
     def find_t(self):
 
         peaks = list()
         valleys = list()
-        for index in self.bin_edges[0:-2]:
+        for index in range(0, len(self.bin_edges)-2):
             if self.histogram[index-1] > self.histogram[index] < self.histogram[index +1]:
-                valleys.append(index)
+                valleys.append(self.bin_edges[index])
             elif self.histogram[index-1] < self.histogram[index] > self.histogram[index +1]:
-                peaks.append(index)
+                peaks.append(self.bin_edges[index])
             else:
                 continue
 
         lastmax = peaks[-1]
 
-        min = len(valleys) - 1
-        while valleys[min] > lastmax:
-            min -=1
+        i = len(valleys) - 1
 
-        lastmin = valleys[min]
+        while valleys[i] >= lastmax:
+            i = i - 1
+
+        lastmin = valleys[i]
 
         return peaks, valleys, lastmin, lastmax
 
@@ -103,18 +102,32 @@ class Detection(object):
 
 
 
-test = Detection("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\images.jpg")
-#print(test.histogram, "\n", test.bin_edges)
+
+test = Detection("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test4.jpg")
 
 
+#print(test.lastmin)
+#print(test.lastmax, '\n', test.valleys, '\n', test.peaks)
+
+ret, thresh1 = cv2.threshold(test.image_matrix, test.lastmin , 255, cv2.THRESH_BINARY)
 
 
-#print(test.peaks, "\n", test.valleys, "\n", test.gradient)
-#print(test.best_threshold,"\n", test.thresholds)
+def results(d, t):
+    coord = np.transpose(np.nonzero(t))
 
-print(test.lastmin)
+    connectivity = 4
 
-ret, thresh1 = cv2.threshold(cv2.imread(test.image_path), test.lastmin , 255, cv2.THRESH_BINARY)
-plt.imshow(thresh1)
+    output = cv2.connectedComponentsWithStats(t, connectivity, cv2.CV_32S)
 
-plt.show()
+    num_l = output[0]
+    labels = output[1]
+    stats = output[2]
+    centroids = output[3]
+
+    for center in centroids:
+        cv2.circle(d.image_matrix, (int(center[0]), int(center[1])), 4, (255), thickness=-1)
+
+    cv2.imwrite('results3.png', d.image_matrix)
+    return None
+
+results(test, thresh1)
