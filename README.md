@@ -5,7 +5,7 @@
 
 ## Current files
 * All the test Images and the results of applying the algorithm
-* The image_processor file which
+* image_processor.py which contains the Detection class
 * Random_code folder which has code that's not currently useful but that I don't want to get rid of
 
 ## Sources
