@@ -2,8 +2,10 @@
 #Purpose: given an input of an image, recognize if the solar panel has a lit IR beacon
 
 
-##TODO: Need to convert color images to grayscale. How do I check what color space the image is using?
-##lastmin is not working
+##TODO: Pre-proccess the image to get better detection
+## Processing techniques: https://docs.opencv.org/3.1.0/d4/d13/tutorial_py_filtering.html
+## Weird dot always in the middle of the image?
+
 
 #import necessary packages
 import cv2
@@ -25,7 +27,7 @@ class Detection(object):
 
     def calculate_matrix(self):
         img = cv2.imread(self.image_path, 0)
-        #img = cv2.GaussianBlur(img,(5,5),)
+        img = cv2.GaussianBlur(img,(5,5),0)
         return img
 
     def find_t(self):
@@ -103,7 +105,7 @@ class Detection(object):
 
 
 
-test = Detection("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test4.jpg")
+test = Detection("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test.png")
 
 
 #print(test.lastmin)
