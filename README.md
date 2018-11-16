@@ -1,17 +1,12 @@
 # Computer_VIsion_Solar_Panels_UAV
 
 ## TO-DO
-* The algorithm only checks adjacent pixel values to the right/down
-I have to change it so that it can check in every direction
-* And divide the matrix by the total number of comparisons??
-* Gaussian bright detection works
-* _Have to find a way to check if the image has an IR bright spot. If it does,_
-_you apply the Gaussian bright detection._
+
 
 ## Current files
-* Some test images all labeled test(number).png // Only test.png has an IR bright spot
-* image_processor will be the code that detects solar panels. Currently Computes the GLCM of image (__BROKEN__)
-* Gaussian_bright_detection applies some preprocessing to the image and circles the IR emitter (_Brightest spot_)
+* All the test Images and the results of applying the algorithm
+* The image_processor file which
+* Random_code folder which has code that's not currently useful but that I don't want to get rid of
 
 ## Sources
 * https://www.scnsoft.com/blog/machine-vision-to-detect-solar-panel-defects
@@ -23,6 +18,9 @@ _you apply the Gaussian bright detection._
 * https://www.researchgate.net/publication/318694161_On_the_detection_of_solar_panels_by_image_processing_techniques
 * https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3386707/
 * https://www.researchgate.net/publication/247160766_Fault_Diagnosis_of_Photovoltaic_Modules_through_Image_Processing_and_Canny_Edge_Detection_on_Field_Thermographic_Measurements
+
+
+
 
 ### Interesting idea from previous link
   1. Step 1: Read the thermal image I;
