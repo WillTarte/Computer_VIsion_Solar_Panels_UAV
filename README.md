@@ -9,33 +9,33 @@
 * Random_code folder which has code that's not currently useful but that I don't want to get rid of
 
 ## Sources
-Solar Panel Defect Detection with Machine Vision
-DBSCAN - Wikipedia
-Finding the Brightest Spot in an Image using OpenCV
-GLCM Texture Feature
-Deep Learning with OpenCV - PyImageSearch
-Object Detection with 10 lines of code – Towards Data Science
-(PDF) On the detection of solar panels by image processing techniques
-Using the Standard Deviation of a Region of Interest in an Image to Estimate Camera to Emitter Distance
-Image Analysis - Intensity Histogram
-python - histogram of gray scale values in numpy image - Stack Overflow
-background subtraction - Differences between MOG, MOG2, and GMG - Stack Overflow
-Blob Detection Using OpenCV ( Python, C++ ) | Learn OpenCV
-OpenCV: Background Subtraction
-Blob detection with k-means part 1 - YouTube
-Adaptive histogram equalization - Wikipedia
-Adaptive histogram equalization - Wikipedia
-What is the meaning of 'min-max normalization'? - Quora
-Histogram equalization - Wikipedia
-(PDF) Fault Diagnosis of Photovoltaic Modules through Image Processing and Canny Edge Detection on Field Thermographic Measurements
-python - Plot two histograms at the same time with matplotlib - Stack Overflow
-OpenCV: Image Thresholding
-(PDF) A simple approach to determine the best threshold value for automatic image thresholding
-python - numpy histogram cumulative density does not sum to 1 - Stack Overflow
-Grayscale - Wikipedia
-Detecting multiple bright spots in an image with Python and OpenCV - PyImageSearch
-Drawing a colored rectangle in a grayscale image using opencv - Stack Overflow
-OpenCV: Drawing Functions in OpenCV
+* Solar Panel Defect Detection with Machine Vision
+* DBSCAN - Wikipedia
+* Finding the Brightest Spot in an Image using OpenCV
+* GLCM Texture Feature
+* Deep Learning with OpenCV - PyImageSearch
+* Object Detection with 10 lines of code – Towards Data Science
+* (PDF) On the detection of solar panels by image processing techniques
+* Using the Standard Deviation of a Region of Interest in an Image to Estimate Camera to Emitter Distance
+* Image Analysis - Intensity Histogram
+* python - histogram of gray scale values in numpy image - Stack Overflow
+* background subtraction - Differences between MOG, MOG2, and GMG - Stack Overflow
+* Blob Detection Using OpenCV ( Python, C++ ) | Learn OpenCV
+* OpenCV: Background Subtraction
+* Blob detection with k-means part 1 - YouTube
+* Adaptive histogram equalization - Wikipedia
+* Adaptive histogram equalization - Wikipedia
+* What is the meaning of 'min-max normalization'? - Quora
+* Histogram equalization - Wikipedia
+* (PDF) Fault Diagnosis of Photovoltaic Modules through Image Processing and Canny Edge Detection on Field Thermographic Measurements
+* python - Plot two histograms at the same time with matplotlib - Stack Overflow
+* OpenCV: Image Thresholding
+* (PDF) A simple approach to determine the best threshold value for automatic image thresholding
+* python - numpy histogram cumulative density does not sum to 1 - Stack Overflow
+* Grayscale - Wikipedia
+* Detecting multiple bright spots in an image with Python and OpenCV - PyImageSearch
+* Drawing a colored rectangle in a grayscale image using opencv - Stack Overflow
+* OpenCV: Drawing Functions in OpenCV
 
 
 
