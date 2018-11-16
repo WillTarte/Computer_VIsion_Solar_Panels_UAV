@@ -1,37 +1,53 @@
 #Author: William Tarte
-#Purpose: given an input of an image, recognize if the solar panel has a lit IR beacon
-
+#Current Purpose: Detect the lit IR bright spot on an image of a solar panel
 
 ##TODO: Pre-proccess the image to get better detection
 ## Processing techniques: https://docs.opencv.org/3.1.0/d4/d13/tutorial_py_filtering.html
-## Weird dot always in the middle of the image?
 
 
 #import necessary packages
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
+#from matplotlib
 
-
+#Class that does the image manipulation/holds the necessary information
 class Detection(object):
 
     def __init__(self, img_path):
-        self.image_path = img_path
-        self.image_matrix = self.calculate_matrix()
-        self.histogram, self.bin_edges = self.calculate_histogram()
-        self.peaks, self.valleys, self.lastmin, self.lastmax = self.find_t()
+
+        self.image_path = img_path #String of the image path /// make sure it has double \\
+        self.image_matrix = self.calculate_matrix() #Matrix representation of the grayscale image with preprocessing
+        self.histogram, self.bin_edges = self.calculate_histogram() #Frequency values, left bin edges of the histogram
+        self.peaks, self.valleys, self.lastmin, self.lastmax = self.find_t() #Pixel intensity values for peaks, values AND last valley value, last peak value
+
+        #This thresholding uses my simple algorithm to find the best threshold value
+        #It might be worth looking into Otsu's Method, Iterative Selection Thresholding Method and  balanced histogram thresholding method
+        ret, self.thresh = cv2.threshold(self.image_matrix, self.lastmin , 255, cv2.THRESH_BINARY) #Applies thresholding to the input image
+
+        self.detect()
 
     def calculate_histogram(self):
+        """
+        Calculates the input image's histogram and returns the pixel intensity
+        frequency values and the left bin(category) edges
+        """
         hist, bin_e = np.histogram(self.image_matrix, bins=range(self.image_matrix.min(),self.image_matrix.max()+1, 1))
         return hist, bin_e
 
     def calculate_matrix(self):
+        """
+        Reads the image in grayscale, and applies preprocessing.
+        Returns the matrix representation (numpy) of the image.
+        """
         img = cv2.imread(self.image_path, 0)
         img = cv2.GaussianBlur(img,(5,5),0)
         return img
 
     def find_t(self):
-
+        """
+        Iteratively combs through the histogram to find the best threshold value.
+        Returns the valley/peak values and the last peak/valley(threshold).
+        """
         peaks = list()
         valleys = list()
         for index in range(0, len(self.bin_edges)-2):
@@ -43,93 +59,52 @@ class Detection(object):
                 continue
 
         lastmax = peaks[-1]
-
         i = len(valleys) - 1
 
         while valleys[i] >= lastmax:
             i = i - 1
 
         lastmin = valleys[i]
-
         return peaks, valleys, lastmin, lastmax
 
+    def detect(self): #Need to optimize for better recognition.
+        """
+        Analyzes the thresholded image to find the components (IR spots in this case)
+        and saves a copy of the original image with the IR spots highlighted.
+        CURRENTLY NOT 100% EFFICIENT.
+        """
 
-'''
-    def histogram_differentiation(self):
-        differentiation = list()
+        #Coordinates of all the non zero pixels
+        coord = np.transpose(np.nonzero(self.thresh))
 
-        for i in range(len(self.histogram)-1):
-            differentiation.append(self.histogram[i+1] - self.histogram[i])
-        differentiation.append(0)
-
-        gradient = list()
-        for val in differentiation:
-            if val == 0:
-                gradient.append(0)
-            elif val > 0:
-                gradient.append(1)
-            elif val < 0:
-                gradient.append(-1)
-
-        peaks = list()
-        valleys = list()
-        for i in range(len(gradient)-1):
-            if gradient[i] == gradient[i+1]:
-                continue
-            elif gradient[i] > gradient[i+1]:
-                peaks.append(i)
-            elif gradient[i] < gradient[i+1]:
-                valleys.append(i)
-
-        return peaks, valleys, gradient
-
-    def threshold_calculation(self):
-        total = 0
-        for i in self.valleys:
-            total += self.histogram[i]
-        mean = total / float(len(self.valleys))
-
-        candidates = list()
-        for index in self.valleys:
-            freq = self.histogram[index]
-            sq_diff = (self.gradient[index])**2
-            d = np.ceil(abs(freq - mean + sq_diff))
-            candidates.append(d)
-
-        return min(candidates[1:len(candidates)-1]), candidates
-'''
+        CONNECTIVITY = 4 #Can be 4 or 8
 
 
+        output = cv2.connectedComponentsWithStats(self.thresh, CONNECTIVITY, cv2.CV_32S) #This is a really whack OpenCV function
+
+        #Which returns
+        num_l = output[0] #The number of labels
+        labels = output[1] #The labels themselves
+        stats = output[2]   #The stats accessed with stats[label, column]
+        centroids = output[3] #The center of the components
+
+        print(num_l)
+        print(labels)
+        print(stats)
+        print(centroids)
+
+        copy = self.image_matrix.copy()
+
+        copy = cv2.cvtColor(copy, cv2.COLOR_GRAY2BGR)
+        for center in centroids[1:]:
+            cv2.circle(copy, (int(center[0]), int(center[1])), 4, (255, 0, 0), thickness=-1)
+
+        string = self.image_path.split("\\")[-1]
+        components = string.split(".")
+        name = components[0] + "_results" +"." + components[-1]
+
+        cv2.imwrite(name, copy)
+        return None
 
 
-
-
-
-test = Detection("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test.png")
-
-
-#print(test.lastmin)
-#print(test.lastmax, '\n', test.valleys, '\n', test.peaks)
-
-ret, thresh1 = cv2.threshold(test.image_matrix, test.lastmin , 255, cv2.THRESH_BINARY)
-
-
-def results(d, t):
-    coord = np.transpose(np.nonzero(t))
-
-    connectivity = 4
-
-    output = cv2.connectedComponentsWithStats(t, connectivity, cv2.CV_32S)
-
-    num_l = output[0]
-    labels = output[1]
-    stats = output[2]
-    centroids = output[3]
-
-    for center in centroids:
-        cv2.circle(d.image_matrix, (int(center[0]), int(center[1])), 4, (255), thickness=-1)
-
-    cv2.imwrite('results3.png', d.image_matrix)
-    return None
-
-results(test, thresh1)
+test = Detection("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test3.jpg")
