@@ -8,7 +8,8 @@
 #import necessary packages
 import cv2
 import numpy as np
-#from matplotlib
+import argparse
+import sys
 
 #Class that does the image manipulation/holds the necessary information
 class Detection(object):
@@ -79,7 +80,6 @@ class Detection(object):
 
         CONNECTIVITY = 4 #Can be 4 or 8
 
-
         output = cv2.connectedComponentsWithStats(self.thresh, CONNECTIVITY, cv2.CV_32S) #This is a really whack OpenCV function
 
         #Which returns
@@ -88,10 +88,10 @@ class Detection(object):
         stats = output[2]   #The stats accessed with stats[label, column]
         centroids = output[3] #The center of the components
 
-        print(num_l)
-        print(labels)
-        print(stats)
-        print(centroids)
+        #print(num_l)
+        #print(labels)
+        #print(stats)
+        #print(centroids)
 
         copy = self.image_matrix.copy()
 
@@ -106,5 +106,29 @@ class Detection(object):
         cv2.imwrite(name, copy)
         return None
 
+if __name__ == "__main__":
 
-test = Detection("C:\\Users\\Admin\\Documents\\My Stuff\\Programming\\Detecting Solar Panels\\Computer_VIsion_Solar_Panels_UAV\\test3.jpg")
+    try:
+        parser = argparse.ArgumentParser(description="This is a python program to tag IR beacons on solar panels")
+
+        parser.add_argument("path", action = 'store', type = str, help="You pass the image path as an argument")
+
+        args = parser.parse_args()
+
+        if args.path:
+            try:
+                IR_detection = Detection(args.path.encode('unicode_escape').decode())
+                print("Code ran without problem")
+            except Exception as e:
+                print("Encountoured an exception of type:", e)
+                sys.exit()
+            else:
+                sys.exit()
+        else:
+            print("Please input a path to an image to process")
+            sys.exit()
+    except Exception as e:
+        print("Encountered exception of type:", e)
+        sys.exit()
+    else:
+        sys.exit()
