@@ -1,28 +1,44 @@
 # Computer_VIsion_Solar_Panels_UAV
 
 ## TO-DO
-* The algorithm only checks adjacent pixel values to the right/down
-I have to change it so that it can check in every direction
-* And divide the matrix by the total number of comparisons??
-* Gaussian bright detection works
-* _Have to find a way to check if the image has an IR bright spot. If it does,_
-_you apply the Gaussian bright detection._
+
 
 ## Current files
-* Some test images all labeled test(number).png // Only test.png has an IR bright spot
-* image_processor will be the code that detects solar panels. Currently Computes the GLCM of image (__BROKEN__)
-* Gaussian_bright_detection applies some preprocessing to the image and circles the IR emitter (_Brightest spot_)
+* All the test Images and the results of applying the algorithm
+* image_processor.py which contains the Detection class
+* Random_code folder which has code that's not currently useful but that I don't want to get rid of
 
 ## Sources
-* https://www.scnsoft.com/blog/machine-vision-to-detect-solar-panel-defects
-* https://en.wikipedia.org/wiki/DBSCAN#Algorithm
-* https://www.pyimagesearch.com/2014/09/29/finding-brightest-spot-image-using-python-opencv/
-* https://support.echoview.com/WebHelp/Windows_and_Dialog_Boxes/Dialog_Boxes/Variable_properties_dialog_box/Operator_pages/GLCM_Texture_Features.htm
-* https://www.pyimagesearch.com/2017/08/21/deep-learning-with-opencv/
-* https://towardsdatascience.com/object-detection-with-10-lines-of-code-d6cb4d86f606
-* https://www.researchgate.net/publication/318694161_On_the_detection_of_solar_panels_by_image_processing_techniques
-* https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3386707/
-* https://www.researchgate.net/publication/247160766_Fault_Diagnosis_of_Photovoltaic_Modules_through_Image_Processing_and_Canny_Edge_Detection_on_Field_Thermographic_Measurements
+* Solar Panel Defect Detection with Machine Vision
+* DBSCAN - Wikipedia
+* Finding the Brightest Spot in an Image using OpenCV
+* GLCM Texture Feature
+* Deep Learning with OpenCV - PyImageSearch
+* Object Detection with 10 lines of code – Towards Data Science
+* (PDF) On the detection of solar panels by image processing techniques
+* Using the Standard Deviation of a Region of Interest in an Image to Estimate Camera to Emitter Distance
+* Image Analysis - Intensity Histogram
+* python - histogram of gray scale values in numpy image - Stack Overflow
+* background subtraction - Differences between MOG, MOG2, and GMG - Stack Overflow
+* Blob Detection Using OpenCV ( Python, C++ ) | Learn OpenCV
+* OpenCV: Background Subtraction
+* Blob detection with k-means part 1 - YouTube
+* Adaptive histogram equalization - Wikipedia
+* Adaptive histogram equalization - Wikipedia
+* What is the meaning of 'min-max normalization'? - Quora
+* Histogram equalization - Wikipedia
+* (PDF) Fault Diagnosis of Photovoltaic Modules through Image Processing and Canny Edge Detection on Field Thermographic Measurements
+* python - Plot two histograms at the same time with matplotlib - Stack Overflow
+* OpenCV: Image Thresholding
+* (PDF) A simple approach to determine the best threshold value for automatic image thresholding
+* python - numpy histogram cumulative density does not sum to 1 - Stack Overflow
+* Grayscale - Wikipedia
+* Detecting multiple bright spots in an image with Python and OpenCV - PyImageSearch
+* Drawing a colored rectangle in a grayscale image using opencv - Stack Overflow
+* OpenCV: Drawing Functions in OpenCV
+
+
+
 
 ### Interesting idea from previous link
   1. Step 1: Read the thermal image I;
